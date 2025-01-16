@@ -1,0 +1,109 @@
+.Nav.navs
+{
+    color: orange;
+}
+.card.logincard 
+{
+    width: 350px;
+    height: 400px;
+    transition: box-shadow 0.3s ease;
+    opacity: 0.8;
+    color: white;
+    background-color: black;
+    margin-left: 800px;
+    margin-top: -200px;
+}
+.card1
+{
+    transition: box-shadow 0.3s ease; /* Smooth transition */
+    border: none;
+}
+.card1:hover 
+{
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Shadow effect */
+}
+.eye
+ {
+    transition: transform 0.3s ease, color 0.3s ease; /* smooth transition */
+  }
+.eye:hover
+ {
+    transform: scale(1.2);  /* Grow the icon */
+    color: green;  /* Change the color on hover */
+  }
+ /* Add these styles to your CSS file or in the <style> tag in the component */
+/* Add these styles to your CSS file or in the <style> tag in the component */
+.icon-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .icon-box:hover {
+    transform: scale(1.1); /* Scale effect */
+  }
+  
+  /* Apply transition to the icon itself */
+  .icon-box svg {
+    color: black; /* Default color */
+    transition: color 0.3s ease-in-out; /* Smooth transition for icon color */
+  }
+  
+  .icon-box svg:hover  {
+    color: orange; /* Icon color on hover */
+  }
+  
+  h5 {
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .icon-box:hover h5 {
+    color: orange; /* Change text color on hover */
+  }
+  .footercard
+  {
+    width: 100%;
+    margin-Top:-760px;
+   opacity: 0.8;
+  }
+.footerlinks
+{
+ color:white;
+   text-Decoration: none;
+   /* margin-left: 20px; */
+}
+.footerlinks:hover{
+    color: orange;
+}
+.residentialcard
+{
+  width: 100%;
+  margin-top:-770px;
+  height: 500px;
+  opacity: 0.6;
+  background-color: black;
+}
+.para1 {
+  animation-name: slideUp;
+  animation-duration: 2s;
+  animation-iteration-count: 2;
+  position: relative; /* Ensure that the position is relative to parent container */
+  bottom: -30px; /* Start the paragraph off the screen */
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(200px); /* Start off screen */
+  }
+  100% {
+    transform: translateY(0); /* End at its normal position */
+  }
+}
+.resid
+{
+transition: all 0.5s ease-in-out;
+}
+.resid:hover {
+  transform: scale(1.1); /* Scale effect */
+}
