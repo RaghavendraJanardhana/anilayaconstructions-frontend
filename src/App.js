@@ -14,6 +14,8 @@ import Residential from "./Components/Residential";
 import Dashboard from "./Components/Dashboard";
 import LabourManagement from "./Components/LabourManagement";
 import ResourceManagement from "./Components/ResourceManagement";
+import LabourManagementReport from "./Components/LabourManagementReport";
+import ResourceManagementReport from "./Components/ResourceManagementReport";
 
 export default function App() {
   return (
@@ -33,6 +35,14 @@ export default function App() {
             <Route
               path="resource-management"
               element={<ResourceManagement />}
+            />
+            <Route
+              path="labour-management-report"
+              element={<LabourManagementReport />}
+            />
+            <Route
+              path="resource-management-report"
+              element={<ResourceManagementReport />}
             />
           </Route>
         </Routes>
