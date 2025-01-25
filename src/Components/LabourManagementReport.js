@@ -65,7 +65,69 @@ export default function LabourManagementReport() {
     }
   };
 
-  // Pagination logic
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this entry?")) {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/api/labourmanagement/${id}`,
+          {
+            method: "DELETE",
+          }
+        );
+        if (response.ok) {
+          setReportData((prevData) =>
+            prevData.filter((entry) => entry.id !== id)
+          );
+          alert("Record deleted successfully!");
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error("Error deleting record:", error);
+        alert("Error deleting record: " + error.message);
+      }
+    }
+  };
+
+  const handleEdit = async (id) => {
+    const updatedData = {
+      id,
+      projectName: "KNS-ETHOS", // Dummy values; You can update this dynamically based on your input
+      engineerName: "Manu",
+      createdDate: "2025-01-06 12:00:00 am",
+      createdBy: "Manu",
+      typeOfLabour: "Plumber",
+      labourCount: 4,
+    };
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/labourmanagement/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedData),
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setReportData((prevData) =>
+          prevData.map((entry) =>
+            entry.id === id ? { ...entry, ...data } : entry
+          )
+        );
+        alert("Record updated successfully!");
+      } else {
+        throw new Error("Failed to update data");
+      }
+    } catch (error) {
+      console.error("Error updating record:", error);
+      alert("Error updating record: " + error.message);
+    }
+  };
+
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
   const currentReport = reportData.slice(firstItemIndex, lastItemIndex);
@@ -155,6 +217,7 @@ export default function LabourManagementReport() {
                 <th>Created By</th>
                 <th>Type of Labour</th>
                 <th>Labour Count</th>
+                <th>Actions</th> {/* New column for edit and delete */}
               </tr>
             </thead>
             <tbody>
@@ -177,6 +240,22 @@ export default function LabourManagementReport() {
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
                     {entry.labourCount}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2 flex space-x-2">
+                    {/* Edit Button */}
+                    <button
+                      onClick={() => handleEdit(entry.id)}
+                      className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+                    >
+                      Edit
+                    </button>
+                    {/* Delete Button */}
+                    <button
+                      onClick={() => handleDelete(entry.id)}
+                      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}

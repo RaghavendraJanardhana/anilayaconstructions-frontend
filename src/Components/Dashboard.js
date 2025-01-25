@@ -12,11 +12,17 @@ export default function Dashboard() {
         <Link to="labour-management-report" style={{ margin: "0 20px" }}>
           Labour Management Report
         </Link>
+        <Link to="labour-management-record" style={{ margin: "0 20px" }}>
+          Labour Management Record
+        </Link>
         <Link to="resource-management" style={{ margin: "0 20px" }}>
           Resource Management
         </Link>
         <Link to="resource-management-report" style={{ margin: "0 20px" }}>
           Resource Management Report
+        </Link>
+        <Link to="resource-management-record" style={{ margin: "0 20px" }}>
+          Resource Management Record
         </Link>
       </nav>
       <div style={{ marginTop: "30px" }}>

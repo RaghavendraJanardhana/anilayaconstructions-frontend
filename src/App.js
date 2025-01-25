@@ -16,6 +16,8 @@ import LabourManagement from "./Components/LabourManagement";
 import ResourceManagement from "./Components/ResourceManagement";
 import LabourManagementReport from "./Components/LabourManagementReport";
 import ResourceManagementReport from "./Components/ResourceManagementReport";
+import LabourManagementRecord from "./Components/LabourManagementRecord";
+import ResourceManagementRecord from "./Components/ResourceManagementRecord";
 
 export default function App() {
   return (
@@ -41,8 +43,16 @@ export default function App() {
               element={<LabourManagementReport />}
             />
             <Route
+              path="labour-management-record"
+              element={<LabourManagementRecord />}
+            />
+            <Route
               path="resource-management-report"
               element={<ResourceManagementReport />}
+            />
+            <Route
+              path="resource-management-record"
+              element={<ResourceManagementRecord />}
             />
           </Route>
         </Routes>
