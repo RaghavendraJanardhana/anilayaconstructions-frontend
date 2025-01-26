@@ -35,10 +35,6 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />}>
             <Route path="labour-management" element={<LabourManagement />} />
             <Route
-              path="resource-management"
-              element={<ResourceManagement />}
-            />
-            <Route
               path="labour-management-report"
               element={<LabourManagementReport />}
             />
@@ -46,6 +42,11 @@ export default function App() {
               path="labour-management-record"
               element={<LabourManagementRecord />}
             />
+            <Route
+              path="resource-management"
+              element={<ResourceManagement />}
+            />
+
             <Route
               path="resource-management-report"
               element={<ResourceManagementReport />}

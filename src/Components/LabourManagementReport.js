@@ -1,11 +1,15 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function LabourManagementReport() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [reportData, setReportData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // Number of items to show per page
+  const [isLoading, setIsLoading] = useState(false); // Added loading state
+  const itemsPerPage = 5; // Number of items per page
+
+  const navigate = useNavigate();
 
   const handleExport = async () => {
     if (!startDate || !endDate) {
@@ -48,6 +52,8 @@ export default function LabourManagementReport() {
       return;
     }
 
+    setIsLoading(true); // Set loading true when fetching data
+
     try {
       const response = await fetch(
         `http://localhost:8080/api/labourmanagement/getByStartEndDate?startDate=${startDate}&endDate=${endDate}`
@@ -62,6 +68,8 @@ export default function LabourManagementReport() {
     } catch (error) {
       console.error("Error fetching report data:", error);
       alert("Error fetching report data: " + error.message);
+    } finally {
+      setIsLoading(false); // Set loading false when request is complete
     }
   };
 
@@ -89,44 +97,19 @@ export default function LabourManagementReport() {
     }
   };
 
-  const handleEdit = async (id) => {
-    const updatedData = {
-      id,
-      projectName: "KNS-ETHOS", // Dummy values; You can update this dynamically based on your input
-      engineerName: "Manu",
-      createdDate: "2025-01-06 12:00:00 am",
-      createdBy: "Manu",
-      typeOfLabour: "Plumber",
-      labourCount: 4,
-    };
-
-    try {
-      const response = await fetch(
-        `http://localhost:8080/api/labourmanagement/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedData),
-        }
-      );
-      if (response.ok) {
-        const data = await response.json();
-        setReportData((prevData) =>
-          prevData.map((entry) =>
-            entry.id === id ? { ...entry, ...data } : entry
-          )
-        );
-        alert("Record updated successfully!");
-      } else {
-        throw new Error("Failed to update data");
-      }
-    } catch (error) {
-      console.error("Error updating record:", error);
-      alert("Error updating record: " + error.message);
-    }
+  const handleEdit = (record) => {
+    console.log("The value of the record is :: ", record);
+    navigate("/dashboard/labour-management-record", { state: { record } });
   };
+
+  const formattedDate = (date) =>
+    date
+      ? new Date(date).toLocaleDateString(undefined, {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
+      : "N/A";
 
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
@@ -206,7 +189,9 @@ export default function LabourManagementReport() {
         </button>
       </form>
 
-      {reportData.length > 0 && (
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : reportData.length > 0 ? (
         <div>
           <table className="table-auto border-collapse border border-gray-200 !w-full">
             <thead>
@@ -230,7 +215,7 @@ export default function LabourManagementReport() {
                     {entry.engineerName}
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
-                    {entry.createdDate}
+                    {formattedDate(entry.createdDate)}
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
                     {entry.createdBy}
@@ -244,7 +229,7 @@ export default function LabourManagementReport() {
                   <td className="border border-gray-300 px-4 py-2 flex space-x-2">
                     {/* Edit Button */}
                     <button
-                      onClick={() => handleEdit(entry.id)}
+                      onClick={() => handleEdit(entry)}
                       className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
                     >
                       Edit
@@ -281,6 +266,8 @@ export default function LabourManagementReport() {
             </button>
           </div>
         </div>
+      ) : (
+        <div>No data available for the selected date range.</div>
       )}
     </div>
   );
