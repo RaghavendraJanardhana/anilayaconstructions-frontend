@@ -12,115 +12,109 @@ import {
 export default function Footer() {
   return (
     <div>
-      <h1 className="text-center" style={{ fontFamily: "Roboto, serif" }}>
-        Why Choose Nilaya{" "}
-      </h1>
-      <h1
-        className="text-center"
-        style={{ color: "orange", fontFamily: "Roboto, serif" }}
-      >
-        Builders
-      </h1>
-      <br></br>
-      <br></br>
-      <br></br>
-
-      <div className="flex icon1" style={{ fontFamily: "Roboto, serif" }}>
-        <div className="icon-box" style={{ marginLeft: "100px" }}>
-          <FaCheckCircle size={30} color="black" />
-          <br></br>
-          <h5>Quality truly delivered</h5>
-        </div>
-        <div className="icon-box" style={{ marginLeft: "300px" }}>
-          <FaMoneyBillWave size={30} color="black" />
-          <br></br>
-          <h5>Legit payment process</h5>
-        </div>
-        <div className="icon-box" style={{ marginLeft: "300px" }}>
-          <FaPaintRoller size={30} color="black" />
-          <br></br>
-          <h5>Post-sale services</h5>
-        </div>
-      </div>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-
-      <div className="flex icon2" style={{ fontFamily: "Roboto, serif" }}>
-        <div className="icon-box" style={{ marginLeft: "80px" }}>
-          <FaBuilding size={30} color="black" />
-          <br></br>
-          <h5>Ethical i.e., harassment free</h5>
-        </div>
-        <div className="icon-box" style={{ marginLeft: "290px" }}>
-          <FaFileAlt size={30} color="black" />
-          <br></br>
-          <h5>Clarity of work-flow</h5>
-        </div>
-        <div className="icon-box" style={{ marginLeft: "290px" }}>
-          <FaHardHat size={30} color="black" />
-          <br></br>
-          <h5>Team of actual experts</h5>
-        </div>
-      </div>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-
-      <div>
+      {/* Background Image Container */}
+      <div className="relative">
         <img
           src="https://t4.ftcdn.net/jpg/09/23/12/47/360_F_923124779_maah7DQGmzRUwkY1Ma4VUmZghxpf6G8J.jpg"
-          width="100%"
+          alt="Background"
+          className="w-full h-80 object-cover"
         />
 
-        <Card
-          className="footercard"
-          style={{ background: "black", color: "white", height: "760px" }}
-        >
-          <Card.Body>
-            <Card.Title>
-              <h2 style={{ textAlign: "center" }}>Nilaya Builders</h2>
-            </Card.Title>
-            <br></br>
-            <Card.Text>
-              <p style={{ marginLeft: "300px" }}>
-                USEFUL LINKS
-                <ul style={{ listStyleType: "disc", marginLeft: "2px" }}>
-                  <li>
-                    <a className="footerlinks" href="/Aboutus">
-                      About us
-                    </a>
-                  </li>
-                  <li>
-                    <a className="footerlinks" href="/Careers">
-                      Careers
-                    </a>
-                  </li>
-                  <li>
-                    <a className="footerlinks" href="/Contact">
-                      Contact Us
-                    </a>
-                  </li>
-                </ul>
-              </p>
-            </Card.Text>
-            <Card.Text style={{ marginLeft: "900px", marginTop: "-120px" }}>
-              <p>
-                Address : #13/1, 14th Main Rd, <br></br>2nd Cross, <br></br>
-                Saraswathi puram, Mysuru - 570009, <br></br>Karnataka<br></br>
-                Phone : 8197339552<br></br>
-                Email : anilayaconstructions@gmail.com
-              </p>
-            </Card.Text>
-          </Card.Body>
-        </Card>
+        {/* Text Overlapping on Background */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50">
+          <h1 className="text-white font-serif text-3xl">Why Choose ANilaya</h1>
+          <h1 className="text-orange-400 font-serif text-4xl mt-2">Builders</h1>
+        </div>
       </div>
-      <br></br>
 
-      <p style={{ textAlign: "center" }}>
-        Ailayaconstructions – Copyright 2025. Developed by Raj IT Solutions
+      {/* Icons section */}
+      <div className="flex justify-between px-10 mt-12 mb-12">
+        <div className="icon-box text-center">
+          <FaCheckCircle size={30} color="black" />
+          <h5 className="mt-2">Quality truly delivered</h5>
+        </div>
+        <div className="icon-box text-center">
+          <FaMoneyBillWave size={30} color="black" />
+          <h5 className="mt-2">Legit payment process</h5>
+        </div>
+        <div className="icon-box text-center">
+          <FaPaintRoller size={30} color="black" />
+          <h5 className="mt-2">Post-sale services</h5>
+        </div>
+      </div>
+
+      {/* Icons section 2 */}
+      <div className="flex justify-between px-10 mb-12">
+        <div className="icon-box text-center">
+          <FaBuilding size={30} color="black" />
+          <h5 className="mt-2">Ethical i.e., harassment free</h5>
+        </div>
+        <div className="icon-box text-center">
+          <FaFileAlt size={30} color="black" />
+          <h5 className="mt-2">Clarity of work-flow</h5>
+        </div>
+        <div className="icon-box text-center">
+          <FaHardHat size={30} color="black" />
+          <h5 className="mt-2">Team of actual experts</h5>
+        </div>
+      </div>
+
+      {/* Footer Card */}
+      <Card className="bg-black text-white mt-12">
+        <Card.Body>
+          <Card.Title className="text-center text-2xl mb-4">
+            Nilaya Builders
+          </Card.Title>
+
+          <div className="flex justify-between">
+            <div className="ml-10">
+              <h5 className="text-lg">USEFUL LINKS</h5>
+              <ul className="list-disc ml-4 mt-2 space-y-2">
+                <li>
+                  <a
+                    className="footerlinks text-white hover:text-teal-400"
+                    href="/Aboutus"
+                  >
+                    About us
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="footerlinks text-white hover:text-teal-400"
+                    href="/Careers"
+                  >
+                    Careers
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="footerlinks text-white hover:text-teal-400"
+                    href="/Contact"
+                  >
+                    Contact Us
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div className="mr-10 text-right">
+              <p>
+                Address: #13/1, 14th Main Rd, <br />
+                2nd Cross, <br />
+                Saraswathi puram, Mysuru - 570009, <br />
+                Karnataka
+              </p>
+              <p>
+                Phone: 8197339552 <br />
+                Email: anilayaconstructions@gmail.com
+              </p>
+            </div>
+          </div>
+        </Card.Body>
+      </Card>
+
+      <p className="text-center mt-6 pb-4">
+        Nilaya Constructions – Copyright 2025. Developed by Raj IT Solutions
         Private Limited
       </p>
     </div>

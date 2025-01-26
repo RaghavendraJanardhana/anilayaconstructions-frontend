@@ -1,5 +1,4 @@
 import React from "react";
-import Login from "./Login";
 
 export default function Home() {
   return (
@@ -29,7 +28,6 @@ export default function Home() {
         >
           Builders
         </h1>
-        <Login />
       </div>
       <br></br>
       <br></br>

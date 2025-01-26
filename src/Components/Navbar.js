@@ -1,76 +1,55 @@
-import React from "react";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import { Navbar as BootstrapNavbar } from "react-bootstrap"; // Renaming the import to avoid conflict
 import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <BootstrapNavbar
-      expand="lg"
-      className="bg-body-tertiary bg-slate-500 shadow-lg h-20"
-    >
-      <Container>
-        {/* Applying grid classes to the navbar */}
-        <div className="grid grid-cols-12 w-full items-center">
-          {/* Brand - Takes up 3 columns */}
-          <BootstrapNavbar.Brand
-            className="col-span-3"
-            style={{ fontFamily: "Roboto, serif" }}
-          >
-            Nilaya Constuctions
-          </BootstrapNavbar.Brand>
-
-          {/* Navbar toggle (for mobile view) */}
-          <BootstrapNavbar.Toggle
-            aria-controls="basic-navbar-nav"
-            className="col-span-1"
-          />
-
-          {/* Navbar items - Use grid to apply custom layout */}
-          <BootstrapNavbar.Collapse
-            id="basic-navbar-nav"
-            className="col-span-8 ml-40 flex"
-          >
-            <Nav className="me-auto grid grid-cols-4 gap-2 w-full navs">
-              <Nav.Link as={Link} to="/" className="text-center">
-                HOME
-              </Nav.Link>
-              <NavDropdown
-                title="CATEGORY"
-                id="basic-nav-dropdown "
-                className="text-center"
+    <div className="bg-gradient-to-r from-teal-300 via-sky-200 to-indigo-100 shadow-md">
+      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div className="relative flex items-center justify-between h-12">
+          {" "}
+          {/* Reduced height to 12 */}
+          <div className="flex-1 flex items-center justify-center sm:justify-start">
+            <Link to="/" className="text-white font-semibold text-xl">
+              ANilaya Constructions
+            </Link>
+          </div>
+          <div className="hidden sm:flex sm:ml-6">
+            <div className="flex space-x-4">
+              {/* Other Navbar Links */}
+              <Link
+                to="/Aboutus"
+                className="text-white hover:bg-teal-400 px-3 py-2 rounded-md text-sm font-medium"
               >
-                <NavDropdown.Item as={Link} to="/Residential">
-                  Residential
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item as={Link} to="Commercial">
-                  Commercial
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item as={Link} to="Interiors">
-                  Interiors
-                </NavDropdown.Item>
-              </NavDropdown>
-              <Nav.Link as={Link} to="/Aboutus" className="text-center">
-                ABOUT
-              </Nav.Link>
-              <Nav.Link as={Link} to="/Careers" className="text-center">
-                CAREERS
-              </Nav.Link>
-              <Nav.Link as={Link} to="/Projects" className="text-center">
-                PROJECTS
-              </Nav.Link>
-              <Nav.Link as={Link} to="/Contact" className="text-center">
-                CONTACT
-              </Nav.Link>
-            </Nav>
-          </BootstrapNavbar.Collapse>
+                About
+              </Link>
+              <Link
+                to="/Careers"
+                className="text-white hover:bg-teal-400 px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Careers
+              </Link>
+              <Link
+                to="/Projects"
+                className="text-white hover:bg-teal-400 px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Projects
+              </Link>
+              <Link
+                to="/Contact"
+                className="text-white hover:bg-teal-400 px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Contact
+              </Link>
+              <Link
+                to="/login"
+                className="text-white hover:bg-teal-400 px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Login
+              </Link>
+            </div>
+          </div>
         </div>
-      </Container>
-    </BootstrapNavbar>
+      </div>
+    </div>
   );
 }
 
