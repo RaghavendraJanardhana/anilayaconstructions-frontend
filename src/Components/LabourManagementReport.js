@@ -98,8 +98,12 @@ export default function LabourManagementReport() {
   };
 
   const handleEdit = (record) => {
-    console.log("The value of the record is :: ", record);
-    navigate("/dashboard/labour-management-record", { state: { record } });
+    navigate("/dashboard/labour-management-record", {
+      state: {
+        record,
+        origin: "/dashboard/labour-management-report", // Add origin dynamically
+      },
+    });
   };
 
   const formattedDate = (date) =>

@@ -5,7 +5,6 @@ export default function LabourManagementRecord() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // State for form data and loading state
   const [formData, setFormData] = useState({
     projectName: "",
     engineerName: "",
@@ -14,26 +13,49 @@ export default function LabourManagementRecord() {
     createdBy: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [typeOfLabourOptions, setTypeOfLabourOptions] = useState([]);
+  const [engineerList, setEngineerList] = useState([]);
+  const [projectList, setProjectList] = useState([]);
 
-  // Populate form data when location state changes
+  const origin =
+    location.state?.origin || "/dashboard/labour-management-report";
+
+  // Fetch MasterData
+  useEffect(() => {
+    const fetchMasterData = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/masterdata");
+        const masterData = await response.json();
+
+        if (masterData && masterData.length > 0) {
+          setTypeOfLabourOptions(masterData[0].typeOfLabour);
+          setEngineerList(masterData[0].engineerList);
+          setProjectList(masterData[0].projectList);
+        }
+      } catch (error) {
+        console.error("Error fetching master data:", error);
+      }
+    };
+    fetchMasterData();
+  }, []);
+
+  // Populate form data
   useEffect(() => {
     if (location.state && location.state.record) {
       setFormData(location.state.record);
     } else {
-      navigate("/labour-management"); // If no record data, redirect to the main page
+      navigate(origin);
     }
-  }, [location, navigate]);
+  }, [location, navigate, origin]);
 
-  // Handle input field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true); // Start loading
+    setIsLoading(true);
 
     try {
       const response = await fetch(
@@ -47,16 +69,16 @@ export default function LabourManagementRecord() {
         }
       );
 
-      setIsLoading(false); // Stop loading
+      setIsLoading(false);
 
       if (!response.ok) {
         throw new Error("Failed to update record");
       }
 
       alert("Record updated successfully!");
-      navigate("/dashboard/labour-management-report"); // Redirect back to LabourManagement page
+      navigate(origin);
     } catch (error) {
-      setIsLoading(false); // Stop loading
+      setIsLoading(false);
       console.error("Error updating record:", error);
       alert("Error: " + error.message);
     }
@@ -73,14 +95,22 @@ export default function LabourManagementRecord() {
           <label className="block text-sm font-semibold" htmlFor="projectName">
             Project Name:
           </label>
-          <input
-            type="text"
+          <select
             name="projectName"
             value={formData.projectName}
             onChange={handleChange}
             required
             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          >
+            <option value="" disabled>
+              Select a Project
+            </option>
+            {projectList.map((project, index) => (
+              <option key={index} value={project}>
+                {project}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Engineer Name */}
@@ -88,14 +118,22 @@ export default function LabourManagementRecord() {
           <label className="block text-sm font-semibold" htmlFor="engineerName">
             Engineer Name:
           </label>
-          <input
-            type="text"
+          <select
             name="engineerName"
             value={formData.engineerName}
             onChange={handleChange}
             required
             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          >
+            <option value="" disabled>
+              Select an Engineer
+            </option>
+            {engineerList.map((engineer, index) => (
+              <option key={index} value={engineer}>
+                {engineer}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Type of Labour */}
@@ -103,14 +141,22 @@ export default function LabourManagementRecord() {
           <label className="block text-sm font-semibold" htmlFor="typeOfLabour">
             Type of Labour:
           </label>
-          <input
-            type="text"
+          <select
             name="typeOfLabour"
             value={formData.typeOfLabour}
             onChange={handleChange}
             required
             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          >
+            <option value="" disabled>
+              Select Labour Type
+            </option>
+            {typeOfLabourOptions.map((labourType, index) => (
+              <option key={index} value={labourType}>
+                {labourType}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Labour Count */}
