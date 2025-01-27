@@ -1,4 +1,6 @@
 import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import "./App.css";
 import Head from "./Components/Head";
 import Navbar from "./Components/Navbar";
@@ -58,7 +60,7 @@ export default function App() {
             />
           </Route>
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
       </Router>
     </div>
   );

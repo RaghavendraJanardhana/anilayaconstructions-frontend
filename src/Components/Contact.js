@@ -1,123 +1,128 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaEnvelope, FaHome } from "react-icons/fa";
 import { MdPhone } from "react-icons/md";
 
 export default function Contact() {
-  return (
-    <div>
-      <div>
-        <img
-          alt="contactimg"
-          src="https://t3.ftcdn.net/jpg/05/30/96/04/360_F_530960431_c8fPd3HansYvrSJ4fJxZqp9OhjQmYoll.jpg"
-          width="100%"
-        />
-      </div>
-      <br></br>
-      <br></br>
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    subject: "",
+    details: "",
+  });
 
-      <div className="grid grid-flow-col p-5 ml-10">
-        <div className="col-span-4">
-          <h1 style={{ fontFamily: "Roboto, serif" }}>Contact Information</h1>
-          <div className="flex p-4 ml-14">
-            <div
-              style={{
-                border: "1px solid orange",
-                borderRadius: "20%",
-                backgroundColor: "orange",
-                height: "50px",
-              }}
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  return (
+    <div
+      className="bg-cover bg-center min-h-screen flex flex-col items-center justify-center"
+      style={{
+        backgroundImage:
+          "url('https://t3.ftcdn.net/jpg/05/30/96/04/360_F_530960431_c8fPd3HansYvrSJ4fJxZqp9OhjQmYoll.jpg')",
+      }}
+    >
+      <div className="w-full max-w-6xl">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Contact Information Section */}
+          <div className="lg:col-span-1 space-y-8 text-black">
+            <h1
+              className="text-2xl font-bold"
+              style={{ fontFamily: "Roboto, serif" }}
             >
-              <FaHome size={40} color="white" />
-            </div>
-            <div>
-              <p className="ml-4">
-                Address: #13/1, 14th Main Rd,<br></br>2nd Cross, <br></br>
-                Saraswathi puram, <br></br>Mysuru - 570009, <br></br>Karnataka
+              Contact Information
+            </h1>
+
+            <div className="flex items-start space-x-4">
+              <div className="bg-orange-500 rounded-full flex items-center justify-center w-12 h-12">
+                <FaHome size={24} color="white" />
+              </div>
+              <p>
+                Address:
+                <br />
+                #13/1, 14th Main Rd, <br />
+                2nd Cross, Saraswathi puram, <br />
+                Mysuru - 570009, Karnataka
               </p>
             </div>
-          </div>
 
-          <div className="flex p-4  ml-14">
-            <div
-              style={{
-                border: "1px solid orange",
-                borderRadius: "20%",
-                backgroundColor: "orange",
-                height: "50px",
-              }}
-            >
-              {" "}
-              <MdPhone size={40} color="white" />
-            </div>
-            <div>
-              <p className="ml-4">
-                Phone No.<br></br>
+            <div className="flex items-start space-x-4">
+              <div className="bg-orange-500 rounded-full flex items-center justify-center w-12 h-12">
+                <MdPhone size={24} color="white" />
+              </div>
+              <p>
+                Phone No.
+                <br />
                 8197339552
               </p>
             </div>
-          </div>
 
-          <div className="flex p-4  ml-14">
-            <div
-              style={{
-                border: "1px solid orange",
-                borderRadius: "20%",
-                backgroundColor: "orange",
-                height: "50px",
-                width: "50px",
-                padding: "5px",
-              }}
-            >
-              {" "}
-              <FaEnvelope size={40} color="white" />
-            </div>
-            <div>
-              <p className="ml-4">
-                Email Address:<br></br>
+            <div className="flex items-start space-x-4">
+              <div className="bg-orange-500 rounded-full flex items-center justify-center w-12 h-12">
+                <FaEnvelope size={24} color="white" />
+              </div>
+              <p>
+                Email Address:
+                <br />
                 anilayaconstructions@gmail.com
               </p>
             </div>
           </div>
-        </div>
 
-        <div className="col-span-8">
-          <h1 style={{ fontFamily: "Roboto, serif" }}>GET IN TOUCH WITH US</h1>
-          <br></br>
-          <div p-4 ml-20>
-            <form>
+          {/* Contact Form Section */}
+          <div className="lg:col-span-2">
+            <h1
+              className="text-2xl font-bold mb-4 text-black"
+              style={{ fontFamily: "Roboto, serif" }}
+            >
+              GET IN TOUCH WITH US
+            </h1>
+            <form className="space-y-4">
               <input
-                className="form-control"
+                className="form-control w-full border bg-opacity-50 bg-gray-200 text-black rounded-lg px-4 py-2"
                 type="text"
+                name="fullName"
                 placeholder="Full Name"
+                value={formData.fullName}
+                onChange={handleChange}
               />
-              <br></br>
               <input
-                className="form-control"
-                type="text"
+                className="form-control w-full border bg-opacity-50 bg-gray-200 text-black rounded-lg px-4 py-2"
+                type="email"
+                name="email"
                 placeholder="Email Address"
+                value={formData.email}
+                onChange={handleChange}
               />
-              <br></br>
               <input
-                className="form-control"
+                className="form-control w-full border bg-opacity-50 bg-gray-200 text-black rounded-lg px-4 py-2"
                 type="text"
+                name="phone"
                 placeholder="Phone Number"
+                value={formData.phone}
+                onChange={handleChange}
               />
-              <br></br>
               <input
-                className="form-control"
+                className="form-control w-full border bg-opacity-50 bg-gray-200 text-black rounded-lg px-4 py-2"
                 type="text"
+                name="subject"
                 placeholder="Subject"
+                value={formData.subject}
+                onChange={handleChange}
               />
-              <br></br>
               <textarea
-                type="text"
-                style={{ width: "850px", height: "150px", padding: "5px" }}
+                className="form-control w-full border bg-opacity-50 bg-gray-200 text-black rounded-lg px-4 py-2"
+                name="details"
                 placeholder="Details"
+                value={formData.details}
+                onChange={handleChange}
+                style={{ minHeight: "150px" }}
               />
-              <br></br>
-              <br></br>
               <button
-                className="btn bg-black text-white"
+                type="submit"
+                className="bg-orange-500 hover:bg-orange-600 text-white rounded-lg px-6 py-2"
                 style={{ fontFamily: "Roboto, serif" }}
               >
                 CONTACT US NOW
@@ -126,8 +131,6 @@ export default function Contact() {
           </div>
         </div>
       </div>
-      <br></br>
-      <br></br>
     </div>
   );
 }

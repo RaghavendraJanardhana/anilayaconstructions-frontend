@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function LabourManagementReport() {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState("2025-01-01");
+  const [endDate, setEndDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
   const [reportData, setReportData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false); // Added loading state
+
   const itemsPerPage = 5; // Number of items per page
 
   const navigate = useNavigate();
+
+  // Fetch data when the component loads
+  useEffect(() => {
+    handleGetReport(); // Fetch the report for the default date range
+  }, []);
 
   const handleExport = async () => {
     if (!startDate || !endDate) {
@@ -47,13 +55,7 @@ export default function LabourManagementReport() {
   };
 
   const handleGetReport = async () => {
-    if (!startDate || !endDate) {
-      alert("Please select both start and end dates!");
-      return;
-    }
-
     setIsLoading(true); // Set loading true when fetching data
-
     try {
       const response = await fetch(
         `http://localhost:8080/api/labourmanagement/getByStartEndDate?startDate=${startDate}&endDate=${endDate}`
