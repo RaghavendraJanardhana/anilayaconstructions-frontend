@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import axios from "axios";
 
-export default function Login() {
+export default function Login({ setUser }) {
+  // Pass setUser from a parent component
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -31,7 +32,13 @@ export default function Login() {
       );
       console.log("Login successful:", response.data);
 
-      // You could save response data to localStorage here for persistent login
+      // Save user data to localStorage and immediately update state
+      localStorage.setItem("user", JSON.stringify(response.data));
+
+      // Immediately update the user state to trigger re-render in Navbar
+      setUser(response.data); // Pass the state-updating function to update Navbar's user state
+
+      // After login, redirect the user
       if (response.data.role === "owner") {
         navigate("/dashboard");
       } else {

@@ -1,4 +1,6 @@
 import React from "react";
+import { useState } from "react";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./App.css";
@@ -23,14 +25,16 @@ import ResourceManagementRecord from "./Components/ResourceManagementRecord";
 import Login from "./Components/Login";
 
 export default function App() {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+
   return (
     <div>
       <Router>
         <Head />
-        <Navbar />
+        <Navbar user={user} setUser={setUser} />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login setUser={setUser} />} />
           <Route path="/Aboutus" element={<Aboutus />} />
           <Route path="/Careers" element={<Careers />} />
           <Route path="/Projects" element={<Projects />} />
