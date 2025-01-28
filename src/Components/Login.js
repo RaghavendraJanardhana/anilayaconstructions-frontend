@@ -43,6 +43,7 @@ export default function Login({ setUser }) {
         navigate("/dashboard");
       } else {
         alert(`Welcome, ${response.data.role}!`);
+        navigate("/dashboard"); // This can be adjusted if there's a different path for employees.
       }
     } catch (error) {
       console.error("Login failed:", error);
