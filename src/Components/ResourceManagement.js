@@ -103,7 +103,7 @@ export default function ResourceManagement() {
       }
 
       const createdMaterial = await response.json();
-      setMaterialData((prev) => [...prev, createdMaterial]); // Append the new material entry
+      setMaterialData((prev) => [createdMaterial, ...prev]); // Prepend the new material entry
       alert("Material added successfully!");
 
       // Reset form
