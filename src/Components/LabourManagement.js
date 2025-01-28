@@ -115,7 +115,9 @@ export default function LabourManagement() {
 
   return (
     <div>
-      <h2>Labour Management</h2>
+      <h2 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-teal-500 to-green-500 tracking-wide drop-shadow-md">
+        Labour Management
+      </h2>
 
       {/* Form to add a new labour entry */}
       <form
@@ -123,10 +125,10 @@ export default function LabourManagement() {
         style={{
           marginBottom: "20px",
           padding: "10px",
-          border: "1px solid #e0e0e0", // Soft light gray border
-          borderRadius: "15px", // Rounded edges
-          backgroundColor: "#e8f5e9", // Fresh green pastel background
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Subtle shadow
+          border: "1px solid #c0c0c0", // Light gray border
+          borderRadius: "12px", // Rounded corners
+          backgroundColor: "#f1f8ff", // Soft light blue background
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Soft shadow
         }}
       >
         {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}

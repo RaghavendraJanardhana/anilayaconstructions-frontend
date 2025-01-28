@@ -122,143 +122,227 @@ export default function ResourceManagement() {
 
   return (
     <div>
-      <h2>Material Management</h2>
+      <h2 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-teal-500 to-green-500 tracking-wide drop-shadow-md">
+        Material Management
+      </h2>
 
       {/* Form to add a material */}
-      <form onSubmit={handleAddMaterial} style={{ marginBottom: "20px" }}>
-        <h3>Add Material</h3>
-        <div>
-          <label>Project Name:</label>
-          <select
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
-            required
-          >
-            <option value="">Select Project</option>
-            {projectList.map((project, index) => (
-              <option key={index} value={project}>
-                {project}
-              </option>
-            ))}
-          </select>
+      <form
+        onSubmit={handleAddMaterial}
+        style={{
+          marginBottom: "20px",
+          padding: "10px",
+          border: "1px solid #e0e0e0", // Soft light gray border
+          borderRadius: "15px", // Rounded edges
+          backgroundColor: "#e8f5e9", // Fresh green pastel background
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Subtle shadow
+        }}
+      >
+        <div className="flex items-center gap-4">
+          {/* Project Name */}
+          <div className="flex flex-col items-center">
+            <label className="mb-1 text-sm">Project Name:</label>
+            <select
+              value={projectName}
+              onChange={(e) => setProjectName(e.target.value)}
+              required
+              style={{
+                width: "120px",
+                padding: "5px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            >
+              <option value="">Select Project</option>
+              {projectList.map((project, index) => (
+                <option key={index} value={project}>
+                  {project}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Engineer Name */}
+          <div className="flex flex-col items-center">
+            <label className="mb-1 text-sm">Engineer Name:</label>
+            <select
+              value={engineerName}
+              onChange={(e) => setEngineerName(e.target.value)}
+              required
+              style={{
+                width: "120px",
+                padding: "5px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            >
+              <option value="">Select Engineer</option>
+              {engineerList.map((engineer, index) => (
+                <option key={index} value={engineer}>
+                  {engineer}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Type of Material */}
+          <div className="flex flex-col items-center">
+            <label className="mb-1 text-sm">Type of Material:</label>
+            <select
+              value={typeOfMaterial}
+              onChange={(e) => setTypeOfMaterial(e.target.value)}
+              required
+              style={{
+                width: "120px",
+                padding: "5px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            >
+              <option value="">Select Material Type</option>
+              {materialTypes.map((type, index) => (
+                <option key={index} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Quantity */}
+          <div className="flex flex-col items-center">
+            <label className="mb-1 text-sm">Quantity:</label>
+            <input
+              type="number"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              required
+              style={{
+                width: "80px",
+                padding: "5px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
+
+          {/* Unit */}
+          <div className="flex flex-col items-center">
+            <label className="mb-1 text-sm">Unit:</label>
+            <select
+              value={unit}
+              onChange={(e) => setUnit(e.target.value)}
+              required
+              style={{
+                width: "80px",
+                padding: "5px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            >
+              <option value="">Select Unit Type</option>
+              {unitInfo.map((type, index) => (
+                <option key={index} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Amount */}
+          <div className="flex flex-col items-center">
+            <label className="mb-1 text-sm">Amount:</label>
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              required
+              style={{
+                width: "120px",
+                padding: "5px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
+
+          {/* Created By */}
+          <div className="flex flex-col items-center">
+            <label className="mb-1 text-sm">Created By:</label>
+            <input
+              type="text"
+              value={createdBy}
+              onChange={(e) => setCreatedBy(e.target.value)}
+              required
+              style={{
+                width: "180px",
+                padding: "5px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
+
+          {/* Add Material Button */}
+          <div className="flex items-end self-end">
+            <button
+              type="submit"
+              className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none"
+            >
+              Add Material
+            </button>
+          </div>
         </div>
-        <div>
-          <label>Engineer Name:</label>
-          <select
-            value={engineerName}
-            onChange={(e) => setEngineerName(e.target.value)}
-            required
-          >
-            <option value="">Select Engineer</option>
-            {engineerList.map((engineer, index) => (
-              <option key={index} value={engineer}>
-                {engineer}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label>Type of Material:</label>
-          <select
-            value={typeOfMaterial}
-            onChange={(e) => setTypeOfMaterial(e.target.value)}
-            required
-          >
-            <option value="">Select Material Type</option>
-            {materialTypes.map((type, index) => (
-              <option key={index} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label>Quantity:</label>
-          <input
-            type="number"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Unit:</label>
-          <select
-            value={unit}
-            onChange={(e) => setUnit(e.target.value)}
-            required
-          >
-            <option value="">Select Unit Type</option>
-            {unitInfo.map((type, index) => (
-              <option key={index} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label>Amount:</label>
-          <input
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Created By:</label>
-          <input
-            type="text"
-            value={createdBy}
-            onChange={(e) => setCreatedBy(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Add Material</button>
       </form>
 
       {/* Table displaying material data */}
-      <table>
-        <thead>
-          <tr>
-            <th>Project Name</th>
-            <th>Engineer Name</th>
-            <th>Type of Material</th>
-            <th>Quantity</th>
-            <th>Unit</th>
-            <th>Amount</th>
-            <th>Created By</th>
-            <th>Created Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentMaterials.map((material) => (
-            <tr key={material.id}>
-              <td>{material.projectName}</td>
-              <td>{material.engineerName}</td>
-              <td>{material.typeOfMaterial}</td>
-              <td>{material.quantity}</td>
-              <td>{material.unit}</td>
-              <td>{material.amount}</td>
-              <td>{material.createdBy}</td>
-              <td>{material.createdDate}</td>
+      <div className="mt-6">
+        <table className="table-auto border-collapse border border-gray-300 w-full">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="border px-4 py-2">Project Name</th>
+              <th className="border px-4 py-2">Engineer Name</th>
+              <th className="border px-4 py-2">Type of Material</th>
+              <th className="border px-4 py-2">Quantity</th>
+              <th className="border px-4 py-2">Unit</th>
+              <th className="border px-4 py-2">Amount</th>
+              <th className="border px-4 py-2">Created By</th>
+              <th className="border px-4 py-2">Created Date</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {currentMaterials.map((material) => (
+              <tr key={material.id}>
+                <td className="border px-4 py-2">{material.projectName}</td>
+                <td className="border px-4 py-2">{material.engineerName}</td>
+                <td className="border px-4 py-2">{material.typeOfMaterial}</td>
+                <td className="border px-4 py-2">{material.quantity}</td>
+                <td className="border px-4 py-2">{material.unit}</td>
+                <td className="border px-4 py-2">{material.amount}</td>
+                <td className="border px-4 py-2">{material.createdBy}</td>
+                <td className="border px-4 py-2">{material.createdDate}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-      <div>
-        <button onClick={handlePrevPage} disabled={currentPage === 1}>
-          Previous
-        </button>
-        <button
-          onClick={handleNextPage}
-          disabled={
-            currentPage >= Math.ceil(materialData.length / itemsPerPage)
-          }
-        >
-          Next
-        </button>
+        <div className="flex justify-between space-x-4 mt-4">
+          <button
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+            className="bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded shadow hover:bg-gray-400"
+          >
+            Previous
+          </button>
+          <button
+            onClick={handleNextPage}
+            disabled={
+              currentPage >= Math.ceil(materialData.length / itemsPerPage)
+            }
+            className="bg-blue-500 text-white font-medium py-2 px-4 rounded shadow hover:bg-blue-600"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );
