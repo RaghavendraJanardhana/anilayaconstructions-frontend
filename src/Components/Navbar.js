@@ -19,6 +19,11 @@ function Navbar({ user, setUser }) {
     navigate("/login"); // Redirect user to login page
   };
 
+  // Navigate to Dashboard when clicking the username
+  const handleDashboardRedirect = () => {
+    navigate("/dashboard");
+  };
+
   return (
     <div className="bg-gradient-to-r from-teal-300 via-sky-200 to-indigo-100 shadow-md">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
@@ -28,9 +33,19 @@ function Navbar({ user, setUser }) {
               ANilaya Constructions
             </Link>
           </div>
+
+          {/* Clickable Username for Redirecting to Dashboard */}
+          {user && (
+            <div
+              className="text-white font-medium text-md px-4 cursor-pointer hover:underline"
+              onClick={handleDashboardRedirect} // Click event added here
+            >
+              Welcome, {user.userName}
+            </div>
+          )}
+
           <div className="hidden sm:flex sm:ml-6">
             <div className="flex space-x-4">
-              {/* Other Navbar Links */}
               <Link
                 to="/Aboutus"
                 className="text-white hover:bg-teal-400 px-3 py-2 rounded-md text-sm font-medium"

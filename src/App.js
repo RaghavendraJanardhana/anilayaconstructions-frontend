@@ -1,5 +1,7 @@
 import React from "react";
 import { useState } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import the necessary CSS
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -32,6 +34,19 @@ export default function App() {
       <Router>
         <Head />
         <Navbar user={user} setUser={setUser} />
+        {/* ToastContainer renders all toast messages */}
+        <ToastContainer
+          position="top-right"
+          autoClose={4000} // Default auto close time
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light" // Light or dark theme
+        />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login setUser={setUser} />} />

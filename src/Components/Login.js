@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function Login({ setUser }) {
   // Pass setUser from a parent component
@@ -14,12 +15,13 @@ export default function Login({ setUser }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage("");
-    setLoading(true); // Start loading
+    setLoading(true);
 
-    // Basic client-side validation
     if (!userName || !password) {
-      setErrorMessage("Both username and password are required.");
-      setLoading(false); // Stop loading
+      toast.error("Both username and password are required!", {
+        position: "top-center",
+      });
+      setLoading(false);
       return;
     }
 
@@ -30,29 +32,31 @@ export default function Login({ setUser }) {
           params: { userName, password },
         }
       );
+
       console.log("Login successful:", response.data);
 
-      // Save user data to localStorage and immediately update state
       localStorage.setItem("user", JSON.stringify(response.data));
+      setUser(response.data);
 
-      // Immediately update the user state to trigger re-render in Navbar
-      setUser(response.data); // Pass the state-updating function to update Navbar's user state
+      // 🟢 Display toast before navigating
+      toast.success("Login successful!", {
+        position: "top-center",
+        autoClose: 2000, // Show message for 2 seconds
+      });
 
-      // After login, redirect the user
-      if (response.data.role === "owner") {
+      // Delay navigation slightly so the toast is visible
+      setTimeout(() => {
         navigate("/dashboard");
-      } else {
-        alert(`Welcome, ${response.data.role}!`);
-        navigate("/dashboard"); // This can be adjusted if there's a different path for employees.
-      }
+      }, 2000);
     } catch (error) {
       console.error("Login failed:", error);
-      setErrorMessage(
-        "Login failed: " +
-          (error.response?.data?.message || "Something went wrong.")
+
+      toast.error(
+        error.response?.data?.message || "Login failed. Please try again.",
+        { position: "top-right", autoClose: 5000 }
       );
     } finally {
-      setLoading(false); // Stop loading after API request finishes
+      setLoading(false);
     }
   };
 
