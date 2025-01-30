@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../axiosConfig"; // Import axios instance
 
 export default function LabourManagementReport() {
   const [startDate, setStartDate] = useState("2025-01-01");
@@ -8,9 +9,9 @@ export default function LabourManagementReport() {
   );
   const [reportData, setReportData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false); // Added loading state
+  const [isLoading, setIsLoading] = useState(false);
 
-  const itemsPerPage = 5; // Number of items per page
+  const itemsPerPage = 5;
 
   const navigate = useNavigate();
 
@@ -19,35 +20,37 @@ export default function LabourManagementReport() {
     handleGetReport(); // Fetch the report for the default date range
   }, []);
 
+  // Function to check if date is valid
+  const isValidDate = (date) => {
+    return !isNaN(Date.parse(date)); // Returns true if date is valid
+  };
+
   const handleExport = async () => {
-    if (!startDate || !endDate) {
-      alert("Please select both start and end dates!");
+    if (!isValidDate(startDate) || !isValidDate(endDate)) {
+      alert("Please enter valid dates!");
       return;
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/labourmanagement/exportByStartEndDate?startDate=${startDate}&endDate=${endDate}`
+      const response = await axiosInstance.get(
+        `/api/labourmanagement/exportByStartEndDate?startDate=${startDate}&endDate=${endDate}`,
+        { responseType: "blob" }
       );
 
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        const formattedStartDate = new Date(startDate)
-          .toISOString()
-          .split("T")[0];
-        const formattedEndDate = new Date(endDate).toISOString().split("T")[0];
+      const blob = response.data;
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      const formattedStartDate = new Date(startDate)
+        .toISOString()
+        .split("T")[0];
+      const formattedEndDate = new Date(endDate).toISOString().split("T")[0];
 
-        link.href = url;
-        link.setAttribute(
-          "download",
-          `labour_${formattedStartDate}_to_${formattedEndDate}.xlsx`
-        );
-        link.click();
-      } else {
-        throw new Error("Failed to export data");
-      }
+      link.href = url;
+      link.setAttribute(
+        "download",
+        `labour_${formattedStartDate}_to_${formattedEndDate}.xlsx`
+      );
+      link.click();
     } catch (error) {
       console.error("Error exporting labour data:", error);
       alert("Error exporting labour data: " + error.message);
@@ -55,36 +58,33 @@ export default function LabourManagementReport() {
   };
 
   const handleGetReport = async () => {
-    setIsLoading(true); // Set loading true when fetching data
+    if (!isValidDate(startDate) || !isValidDate(endDate)) {
+      alert("Please enter valid dates!");
+      return;
+    }
+
+    setIsLoading(true);
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/labourmanagement/getByStartEndDate?startDate=${startDate}&endDate=${endDate}`
+      const response = await axiosInstance.get(
+        `/api/labourmanagement/getByStartEndDate?startDate=${startDate}&endDate=${endDate}`
       );
-      if (response.ok) {
-        const data = await response.json();
-        setReportData(data);
-        setCurrentPage(1); // Reset to the first page
-      } else {
-        throw new Error("Failed to fetch report data");
-      }
+      setReportData(response.data);
+      setCurrentPage(1); // Reset to the first page
     } catch (error) {
       console.error("Error fetching report data:", error);
       alert("Error fetching report data: " + error.message);
     } finally {
-      setIsLoading(false); // Set loading false when request is complete
+      setIsLoading(false);
     }
   };
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this entry?")) {
       try {
-        const response = await fetch(
-          `http://localhost:8080/api/labourmanagement/${id}`,
-          {
-            method: "DELETE",
-          }
+        const response = await axiosInstance.delete(
+          `/api/labourmanagement/${id}`
         );
-        if (response.ok) {
+        if (response.status === 204) {
           setReportData((prevData) =>
             prevData.filter((entry) => entry.id !== id)
           );
@@ -103,19 +103,19 @@ export default function LabourManagementReport() {
     navigate("/dashboard/labour-management-record", {
       state: {
         record,
-        origin: "/dashboard/labour-management-report", // Add origin dynamically
+        origin: "/dashboard/labour-management-report",
       },
     });
   };
 
   const formattedDate = (date) =>
-    date
+    date && isValidDate(date)
       ? new Date(date).toLocaleDateString(undefined, {
           year: "numeric",
           month: "short",
           day: "numeric",
         })
-      : "N/A";
+      : "Invalid Date";
 
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
@@ -208,7 +208,7 @@ export default function LabourManagementReport() {
                 <th>Created By</th>
                 <th>Type of Labour</th>
                 <th>Labour Count</th>
-                <th>Actions</th> {/* New column for edit and delete */}
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -233,14 +233,12 @@ export default function LabourManagementReport() {
                     {entry.labourCount}
                   </td>
                   <td className="border border-gray-300 px-4 py-2 flex space-x-2">
-                    {/* Edit Button */}
                     <button
                       onClick={() => handleEdit(entry)}
                       className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
                     >
                       Edit
                     </button>
-                    {/* Delete Button */}
                     <button
                       onClick={() => handleDelete(entry.id)}
                       className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"

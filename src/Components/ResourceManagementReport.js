@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../axiosConfig"; // Import the axios instance
 
 export default function ResourceManagementReport() {
   const [materialData, setMaterialData] = useState([]);
@@ -19,17 +20,13 @@ export default function ResourceManagementReport() {
     }
   }, [startDate, endDate]);
 
-  // Fetch material data
+  // Fetch material data using axios
   const handleGetReport = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/materialsmanagement/getByStartEndDate?startDate=${startDate}&endDate=${endDate}`
+      const response = await axiosInstance.get(
+        `/api/materialsmanagement/getByStartEndDate?startDate=${startDate}&endDate=${endDate}`
       );
-      if (!response.ok) {
-        throw new Error("Failed to fetch report data");
-      }
-      const data = await response.json();
-      setMaterialData(data);
+      setMaterialData(response.data);
       setCurrentPage(1);
     } catch (error) {
       console.error("Error fetching report data:", error);
@@ -37,16 +34,14 @@ export default function ResourceManagementReport() {
     }
   };
 
-  // Export report as an Excel file
+  // Export report as an Excel file using axios
   const handleExtractReport = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/materialsmanagement/exportByStartEndDate?startDate=${startDate}&endDate=${endDate}`
+      const response = await axiosInstance.get(
+        `/api/materialsmanagement/exportByStartEndDate?startDate=${startDate}&endDate=${endDate}`,
+        { responseType: "blob" }
       );
-      if (!response.ok) {
-        throw new Error("Failed to extract report data");
-      }
-      const blob = await response.blob();
+      const blob = response.data;
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = `ResourceManagementReport_${startDate}_to_${endDate}.xlsx`;
@@ -61,26 +56,22 @@ export default function ResourceManagementReport() {
     navigate("/dashboard/resource-management-record", {
       state: {
         material,
-        origin: "/dashboard/resource-management-record", // Add origin dynamically
+        origin: "/dashboard/resource-management-record",
       },
     });
   };
 
-  // Handle Delete
+  // Handle Delete using axios
   const handleDelete = async (materialId) => {
     if (!window.confirm("Are you sure you want to delete this material?"))
       return;
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/materialsmanagement/${materialId}`,
-        { method: "DELETE" }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to delete material");
+      const response = await axiosInstance.delete(`/${materialId}`);
+      if (response.status === 204) {
+        alert("Material deleted successfully!");
+        handleGetReport(); // Refresh data
       }
-      alert("Material deleted successfully!");
-      handleGetReport(); // Refresh data
     } catch (error) {
       console.error("Error deleting material:", error);
       alert("Failed to delete material: " + error.message);

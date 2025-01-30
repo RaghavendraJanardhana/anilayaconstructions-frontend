@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import axios from "axios";
 import { toast } from "react-toastify";
+import axiosInstance from "../axiosConfig"; // Path to your axiosConfig file
 
 export default function Login({ setUser }) {
   // Pass setUser from a parent component
-  const [userName, setUserName] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false); // Track loading state
@@ -17,7 +18,7 @@ export default function Login({ setUser }) {
     setErrorMessage("");
     setLoading(true);
 
-    if (!userName || !password) {
+    if (!username || !password) {
       toast.error("Both username and password are required!", {
         position: "top-center",
       });
@@ -26,31 +27,36 @@ export default function Login({ setUser }) {
     }
 
     try {
-      const response = await axios.get(
-        "http://localhost:8080/api/employees/login",
-        {
-          params: { userName, password },
-        }
-      );
+      const response = await axiosInstance.post("/api/auth/signin", {
+        username,
+        password,
+      });
 
       console.log("Login successful:", response.data);
 
-      localStorage.setItem("user", JSON.stringify(response.data));
-      setUser(response.data);
+      // Store user info and token in localStorage
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          username: response.data.username,
+          email: response.data.email,
+          roles: response.data.roles,
+          token: response.data.accessToken, // Store the token here
+        })
+      );
 
-      // 🟢 Display toast before navigating
+      setUser(response.data); // Update global state if necessary
+
       toast.success("Login successful!", {
         position: "top-center",
-        autoClose: 2000, // Show message for 2 seconds
+        autoClose: 2000,
       });
 
-      // Delay navigation slightly so the toast is visible
       setTimeout(() => {
         navigate("/dashboard");
       }, 2000);
     } catch (error) {
       console.error("Login failed:", error);
-
       toast.error(
         error.response?.data?.message || "Login failed. Please try again.",
         { position: "top-right", autoClose: 5000 }
@@ -126,8 +132,8 @@ export default function Login({ setUser }) {
                 <input
                   className="form-control"
                   type="text"
-                  value={userName}
-                  onChange={(e) => setUserName(e.target.value)}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   required
                 />
 

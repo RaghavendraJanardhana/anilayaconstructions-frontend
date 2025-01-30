@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axiosInstance from "../axiosConfig"; // Import the axios instance
 
 export default function ResourceManagementRecord() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Default state for formData
   const [formData, setFormData] = useState({
     projectName: "",
     engineerName: "",
@@ -31,7 +31,6 @@ export default function ResourceManagementRecord() {
       console.error("No record found in location state.");
       navigate(origin);
     } else {
-      // Populate form data from the record
       setFormData({
         id: record.id || "",
         projectName: record.projectName || "",
@@ -48,11 +47,9 @@ export default function ResourceManagementRecord() {
   useEffect(() => {
     const fetchMasterData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/masterdata");
-        if (!response.ok) throw new Error("Failed to fetch master data");
-        const masterData = await response.json();
+        const response = await axiosInstance.get("/api/masterdata");
+        const masterData = response.data;
 
-        // Populate dropdown options
         setTypeOfMaterialOptions(masterData[0]?.typeOfMaterial || []);
         setEngineerList(masterData[0]?.engineerList || []);
         setProjectList(masterData[0]?.projectList || []);
@@ -75,20 +72,10 @@ export default function ResourceManagementRecord() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/materialsmanagement/${formData.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
+      const response = await axiosInstance.put(
+        `/api/materialsmanagement/${formData.id}`,
+        formData
       );
-
-      if (!response.ok) {
-        throw new Error("Failed to update record");
-      }
 
       alert("Record updated successfully!");
       navigate(origin);

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axiosInstance from "../axiosConfig"; // Path to your axiosConfig file
 
 export default function LabourManagement() {
   const [labourData, setLabourData] = useState([]);
@@ -12,6 +13,7 @@ export default function LabourManagement() {
   const [labourCount, setLabourCount] = useState("");
   const [createdBy, setCreatedBy] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false); // Track loading state for fetching data
 
   // Masterdata state
   const [typeOfLabourOptions, setTypeOfLabourOptions] = useState([]);
@@ -20,14 +22,14 @@ export default function LabourManagement() {
 
   // Fetch Labour data
   const fetchLabourData = async () => {
+    setLoading(true);
     try {
-      const response = await fetch(
-        "http://localhost:8080/api/labourmanagement"
-      );
-      const data = await response.json();
-      setLabourData(data);
+      const response = await axiosInstance.get("/api/labourmanagement");
+      setLabourData(response.data); // Axios automatically parses the response
     } catch (error) {
       console.error("Error fetching labour data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -39,8 +41,8 @@ export default function LabourManagement() {
   useEffect(() => {
     const fetchMasterData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/masterdata");
-        const masterData = await response.json();
+        const response = await axiosInstance.get("/api/masterdata");
+        const masterData = response.data;
 
         if (masterData && masterData.length > 0) {
           setTypeOfLabourOptions(masterData[0].typeOfLabour);
@@ -84,29 +86,21 @@ export default function LabourManagement() {
     };
 
     try {
-      const response = await fetch(
-        "http://localhost:8080/api/labourmanagement",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newLabour),
-        }
+      const response = await axiosInstance.post(
+        "/api/labourmanagement",
+        newLabour
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to create labour entry");
+      if (response.status === 200) {
+        // Successfully created; reload the data
+        await fetchLabourData();
+        setProjectName("");
+        setEngineerName("");
+        setTypeOfLabour("");
+        setLabourCount("");
+        setCreatedBy("");
+        alert("Labour added successfully!");
       }
-
-      // Successfully created; reload the data
-      await fetchLabourData();
-      setProjectName("");
-      setEngineerName("");
-      setTypeOfLabour("");
-      setLabourCount("");
-      setCreatedBy("");
-      alert("Labour added successfully!");
     } catch (error) {
       console.error("Error adding labour:", error);
       setErrorMessage("Failed to add labour: " + error.message);
@@ -268,7 +262,7 @@ export default function LabourManagement() {
                 cursor: "pointer",
               }}
             >
-              Add Labour
+              {loading ? "Adding..." : "Add Labour"}
             </button>
           </div>
         </div>

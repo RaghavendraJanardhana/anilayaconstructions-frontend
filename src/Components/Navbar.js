@@ -40,7 +40,7 @@ function Navbar({ user, setUser }) {
               className="text-white font-medium text-md px-4 cursor-pointer hover:underline"
               onClick={handleDashboardRedirect} // Click event added here
             >
-              Welcome, {user.userName}
+              Welcome, {user.username}
             </div>
           )}
 

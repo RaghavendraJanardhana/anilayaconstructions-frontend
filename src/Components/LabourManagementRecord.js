@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axiosInstance from "../axiosConfig"; // Import axios instance
 
 export default function LabourManagementRecord() {
   const location = useLocation();
@@ -24,8 +25,8 @@ export default function LabourManagementRecord() {
   useEffect(() => {
     const fetchMasterData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/masterdata");
-        const masterData = await response.json();
+        const response = await axiosInstance.get("/api/masterdata");
+        const masterData = response.data;
 
         if (masterData && masterData.length > 0) {
           setTypeOfLabourOptions(masterData[0].typeOfLabour);
@@ -58,20 +59,14 @@ export default function LabourManagementRecord() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/labourmanagement/${formData.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
+      const response = await axiosInstance.put(
+        `/api/labourmanagement/${formData.id}`,
+        formData
       );
 
       setIsLoading(false);
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error("Failed to update record");
       }
 

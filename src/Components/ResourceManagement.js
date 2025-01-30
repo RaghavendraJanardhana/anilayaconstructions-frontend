@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axiosInstance from "../axiosConfig"; // Path to your axiosConfig file
 
 export default function ResourceManagement() {
   const [materialData, setMaterialData] = useState([]);
@@ -24,11 +25,9 @@ export default function ResourceManagement() {
   useEffect(() => {
     const fetchMaterialData = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:8080/api/materialsmanagement"
-        );
-        const data = await response.json();
-        setMaterialData(data); // Update state with the response data
+        const response = await axiosInstance.get("/api/materialsmanagement");
+
+        setMaterialData(response.data); // Update state with the response data
       } catch (error) {
         console.error("Error fetching material data:", error);
       }
@@ -41,8 +40,8 @@ export default function ResourceManagement() {
   useEffect(() => {
     const fetchMasterData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/masterdata");
-        const masterData = await response.json();
+        const response = await axiosInstance.get("/api/masterdata");
+        const masterData = response.data;
 
         if (masterData && masterData.length > 0) {
           setProjectList(masterData[0].projectList);
@@ -89,31 +88,28 @@ export default function ResourceManagement() {
     };
 
     try {
-      const response = await fetch(
-        "http://localhost:8080/api/materialsmanagement",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newMaterial),
-        }
+      const response = await axiosInstance.post(
+        "/api/materialsmanagement",
+        newMaterial
       );
 
-      if (!response.ok) {
+      // Check if response is successful (status 200 or any other status that indicates success)
+      if (response.status === 200 || response.data) {
+        const createdMaterial = response.data;
+        setMaterialData((prev) => [createdMaterial, ...prev]); // Prepend the new material entry
+        alert("Material added successfully!");
+
+        // Reset form fields
+        setProjectName("");
+        setEngineerName("");
+        setTypeOfMaterial("");
+        setQuantity("");
+        setUnit("");
+        setAmount("");
+        setCreatedBy("");
+      } else {
         throw new Error("Failed to create material entry");
       }
-
-      const createdMaterial = await response.json();
-      setMaterialData((prev) => [createdMaterial, ...prev]); // Prepend the new material entry
-      alert("Material added successfully!");
-
-      // Reset form
-      setProjectName("");
-      setEngineerName("");
-      setTypeOfMaterial("");
-      setQuantity("");
-      setUnit("");
-      setAmount("");
-      setCreatedBy("");
     } catch (error) {
       console.error("Error adding material:", error);
       alert("Failed to add material: " + error.message);
